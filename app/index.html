@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#153b65">
+  <title></title>
+  <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/app-config.js"></script>
+  <script>
+    if (location.pathname !== '/' && location.pathname !== '/index.html' && !location.hash) {
+      history.replaceState(null, '', '/#' + location.pathname.replace(/^\/+/, '') + location.search);
+    }
+    if (location.hash.startsWith('#/')) history.replaceState(null, '', location.pathname + '#' + location.hash.slice(2));
+  </script>
+  <script id="sap-ui-bootstrap" src="/resources/sap-ui-core.js"
+    data-sap-ui-theme="sap_horizon" data-sap-ui-libs="sap.m,sap.ui.layout"
+    data-sap-ui-compat-version="edge" data-sap-ui-async="true"
+    data-sap-ui-resource-roots='{"rsvroom":"/"}'
+    data-sap-ui-on-init="module:rsvroom/bootstrap"></script>
+</head>
+<body class="sapUiBody sapUiSizeCompact">
+  <div id="loading" role="status"><img src="/assets/logo.svg" alt=""><strong></strong><span></span></div>
+  <div id="content"></div>
+</body>
+</html>

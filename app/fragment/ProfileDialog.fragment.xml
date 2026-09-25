@@ -1,0 +1,22 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+  <Dialog id="dialog" title="{i18n>changeProfile}" contentWidth="30rem" class="formDialog" afterClose=".onAfterClose">
+    <content>
+      <VBox class="dialogFields">
+        <Text text="{i18n>profileLoginIntro}" class="muted"/>
+        <VBox class="field">
+          <Label text="{i18n>employee}" labelFor="profile"/>
+          <Select id="profile" width="100%" selectedKey="{dialog>/userID}" items="{dialog>/profiles}">
+            <core:Item key="{dialog>ID}" text="{dialog>label}"/>
+          </Select>
+        </VBox>
+        <Button text="{i18n>signOut}" press=".onSignOut"/>
+      </VBox>
+    </content>
+    <beginButton>
+      <Button text="{i18n>continue}" type="Emphasized" press=".onProfile"/>
+    </beginButton>
+    <endButton>
+      <Button text="{i18n>cancel}" press=".onClose"/>
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>

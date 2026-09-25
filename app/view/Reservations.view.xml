@@ -1,0 +1,190 @@
+<mvc:View
+  controllerName="rsvroom.controller.ReservationsPage"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  xmlns:rsv="rsvroom.control"
+>
+  <VBox>
+    <core:Fragment fragmentName="rsvroom.fragment.PageHeading" type="XML"/>
+    <VBox class="emptyState" visible="{page>/noParking}">
+      <Title text="{i18n>noParkingLots}" level="H3"/>
+      <Text text="{i18n>noParkingLotsHint}"/>
+      <Button text="{i18n>admin}" visible="{page>/admin}" type="Emphasized" press=".onParkingAdmin"/>
+    </VBox>
+    <VBox class="pageSection" visible="{= !${page>/noParking} }">
+      <HBox class="filterBar card row" wrap="Wrap">
+        <VBox class="field">
+          <Label text="{i18n>date}" labelFor="date"/>
+          <DatePicker
+            id="date"
+            valueFormat="yyyy-MM-dd"
+            displayFormat="medium"
+            width="10rem"
+            value="{page>/filters/date}"
+            change=".onFilter"
+          />
+        </VBox>
+        <VBox class="field">
+          <Label text="{i18n>start}" labelFor="start"/>
+          <TimePicker
+            id="start"
+            valueFormat="HH:mm"
+            displayFormat="HH:mm"
+            width="7rem"
+            value="{page>/filters/start}"
+            change=".onFilter"
+          />
+        </VBox>
+        <VBox class="field">
+          <Label text="{i18n>end}" labelFor="end"/>
+          <TimePicker
+            id="end"
+            valueFormat="HH:mm"
+            displayFormat="HH:mm"
+            width="7rem"
+            value="{page>/filters/end}"
+            change=".onFilter"
+          />
+        </VBox>
+        <VBox class="field">
+          <Label text="{page>/buildingLabel}" labelFor="building"/>
+          <Select
+            id="building"
+            width="100%"
+            selectedKey="{page>/filters/building}"
+            items="{page>/buildings}"
+            change=".onBuilding"
+          >
+            <core:Item key="{page>ID}" text="{page>name}"/>
+          </Select>
+        </VBox>
+        <VBox class="field">
+          <Label text="{page>/floorLabel}" labelFor="floor"/>
+          <Select id="floor" width="100%" selectedKey="{page>/filters/floor}" items="{page>/floors}" change=".onFloor">
+            <core:Item key="{page>ID}" text="{page>name}"/>
+          </Select>
+        </VBox>
+      </HBox>
+      <HBox class="row" visible="{= ${page>/parking} &amp;&amp; ${page>/admin} &amp;&amp; !!${page>/floor} }">
+        <Button text="{i18n>addParkingSpace}" type="Transparent" icon="sap-icon://add" press=".onAddParkingSpace"/>
+        <Button text="{i18n>openFloorEditor}" type="Transparent" icon="sap-icon://edit" press=".onEditor"/>
+      </HBox>
+      <Text text="{page>/zone}" class="zoneNote"/>
+      <MessageStrip text="{page>/error}" type="Error" visible="{= !!${page>/error} }"/>
+      <HBox class="spaceOptions row" wrap="Wrap">
+        <VBox class="field" visible="{page>/rooms}">
+          <Label text="{i18n>capacity}" labelFor="capacity"/>
+          <StepInput
+            id="capacity"
+            min="1"
+            max="10000"
+            width="7rem"
+            value="{page>/filters/capacity}"
+            change=".onFilter"
+          />
+        </VBox>
+        <VBox class="field">
+          <Label text="{i18n>equipment}" labelFor="equipment"/>
+          <MultiComboBox
+            id="equipment"
+            width="16rem"
+            selectedKeys="{page>/filters/equipment}"
+            items="{page>/equipment}"
+            selectionFinish=".onEquipment"
+          >
+            <core:Item key="{page>ID}" text="{page>name}"/>
+          </MultiComboBox>
+        </VBox>
+        <VBox class="field">
+          <Label text="{page>/resourceLabel}" labelFor="resource"/>
+          <Select
+            id="resource"
+            width="18rem"
+            selectedKey="{page>/selectedID}"
+            items="{page>/resourceOptions}"
+            enabled="{= !!(${page>/resources} || []).length }"
+            change=".onResource"
+          >
+            <core:Item key="{page>ID}" text="{page>name}"/>
+          </Select>
+        </VBox>
+        <SegmentedButton selectedKey="{page>/filters/mode}" selectionChange=".onMode">
+          <items>
+            <SegmentedButtonItem key="plan" text="{i18n>plan}" icon="sap-icon://map"/>
+            <SegmentedButtonItem key="list" text="{i18n>list}" icon="sap-icon://list"/>
+          </items>
+        </SegmentedButton>
+        <Button text="{i18n>refresh}" type="Transparent" icon="sap-icon://refresh" press=".onRefresh"/>
+      </HBox>
+      <HBox class="spaceGrid row" wrap="Wrap" visible="{= !${page>/error} }">
+        <VBox class="mapPane" width="100%">
+          <rsv:FloorPlan
+            id="floorPlan"
+            visible="{= ${page>/filters/mode} === 'plan' &amp;&amp; !!${page>/floor} }"
+            resources="{page>/resources}"
+            objects="{page>/objects}"
+            objectTypes="{page>/objectTypes}"
+            image="{page>/floor/planImage}"
+            plan="{page>/floor/floorPlan}"
+            planWidth="{page>/floor/planWidth}"
+            planHeight="{page>/floor/planHeight}"
+            selected="{page>/selectedID}"
+            viewState="{page>/viewState}"
+            label="{i18n>plan}"
+            select=".onMapSelect"
+            viewport=".onViewport"
+          />
+          <VBox visible="{= ${page>/filters/mode} === 'list' }" items="{page>/resources}">
+            <VBox class="card resourceCard">
+              <HBox class="row" wrap="Wrap">
+                <Title text="{page>name}" level="H3"/>
+                <ObjectStatus text="{page>statusText}" state="{page>state}"/>
+              </HBox>
+              <Text text="{page>code}"/>
+              <Text text="{page>typeText}" class="muted"/>
+              <Text text="{page>capacityText}" visible="{= !!${page>capacityText} }" class="muted"/>
+              <Button text="{i18n>details}" type="Transparent" icon="sap-icon://slim-arrow-right" press=".onDetails"/>
+            </VBox>
+          </VBox>
+          <Text
+            text="{i18n>floorPlanFallback}"
+            class="mapCaption"
+            visible="{= ${page>/filters/mode} === 'plan' &amp;&amp; !${page>/floor/planImage} &amp;&amp; !${page>/floor/floorPlan} }"
+          />
+          <HBox class="legend row" wrap="Wrap" items="{page>/legend}">
+            <ObjectStatus text="{page>text}" state="{page>state}" class="badge"/>
+          </HBox>
+        </VBox>
+        <VBox class="card detailPane">
+          <VBox class="emptyState" visible="{= !${page>/selected} }">
+            <Title text="{i18n>selectSpace}" level="H3"/>
+            <Text text="{i18n>selectSpaceHint}" class="muted"/>
+          </VBox>
+          <VBox class="detailContent" visible="{= !!${page>/selected} }">
+            <ObjectStatus text="{page>/selected/statusText}" state="{page>/selected/state}" class="badge"/>
+            <Title text="{page>/selected/name}" level="H2"/>
+            <Text text="{page>/selected/location}" class="muted"/>
+            <Text text="{page>/selected/typeText}" class="eyebrow"/>
+            <Text text="{page>/selected/interval}" class="detailInterval"/>
+            <Title text="{i18n>equipment}" level="H4"/>
+            <Text text="{page>/selected/equipment}" class="muted"/>
+            <Text text="{page>/selected/capacityText}" visible="{page>/rooms}" class="muted"/>
+            <Link text="{i18n>display}" href="{page>/selected/displayURL}" target="_blank"/>
+            <Button text="{i18n>reserve}" type="Emphasized" visible="{page>/selected/canBook}" press=".onReserve"/>
+            <Button text="{i18n>edit}" type="Emphasized" visible="{page>/selected/hasOwn}" press=".onEditSelected"/>
+            <VBox class="timeline" visible="{page>/rooms}" items="{page>/timeline}">
+              <Button
+                text="{page>text}"
+                enabled="{page>enabled}"
+                type="Transparent"
+                class="timelineSlot"
+                press=".onSlot"
+              />
+            </VBox>
+          </VBox>
+        </VBox>
+      </HBox>
+    </VBox>
+  </VBox>
+</mvc:View>

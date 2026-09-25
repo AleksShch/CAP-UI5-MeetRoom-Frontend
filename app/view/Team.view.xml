@@ -1,0 +1,24 @@
+<mvc:View controllerName="rsvroom.controller.Team" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core">
+  <VBox>
+    <VBox class="pageHeading">
+      <Title text="{i18n>team}" level="H1"/>
+      <Text text="{i18n>teamIntro}"/>
+    </VBox>
+    <HBox class="filterBar card row" wrap="Wrap">
+      <VBox class="field">
+        <Label text="{i18n>chooseTeam}" labelFor="team"/>
+        <Select id="team" width="100%" selectedKey="{page>/teamID}" items="{page>/teams}" change=".onTeam">
+          <core:Item key="{page>ID}" text="{page>name}"/>
+        </Select>
+      </VBox>
+      <VBox class="field">
+        <Label text="{i18n>date}" labelFor="day"/>
+        <DatePicker id="day" valueFormat="yyyy-MM-dd" displayFormat="medium" value="{page>/day}" change=".onDay"/>
+      </VBox>
+    </HBox>
+    <Text text="{i18n>noTeam}" visible="{= !(${page>/people} || []).length }"/>
+    <HBox class="peopleGrid row" wrap="Wrap" items="{page>/people}">
+      <core:Fragment fragmentName="rsvroom.fragment.PersonCard" type="XML"/>
+    </HBox>
+  </VBox>
+</mvc:View>

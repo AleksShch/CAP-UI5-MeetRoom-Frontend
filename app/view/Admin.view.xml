@@ -1,0 +1,109 @@
+<mvc:View
+  controllerName="rsvroom.controller.AdminPage"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+>
+  <VBox>
+    <VBox class="pageHeading">
+      <Title text="{i18n>admin}" level="H1"/>
+      <Text text="{i18n>adminIntro}"/>
+    </VBox>
+    <HBox class="adminToolbar row" wrap="Wrap">
+      <VBox class="field">
+        <Label text="{i18n>admin}" labelFor="entity"/>
+        <Select id="entity" width="18rem" selectedKey="{page>/entity}" items="{page>/options}" change=".onEntity">
+          <core:Item key="{page>ID}" text="{page>name}"/>
+        </Select>
+      </VBox>
+      <Button text="{page>/addText}" type="Emphasized" icon="sap-icon://add" visible="{page>/editable}" press=".onAdd"/>
+      <Button text="{i18n>openFloorEditor}" icon="sap-icon://edit" press=".onFloorEditor"/>
+      <Button text="{i18n>refresh}" type="Transparent" icon="sap-icon://refresh" press=".onRefresh"/>
+    </HBox>
+    <VBox class="card" visible="{= !${page>/editable} }">
+      <Title text="{page>/heading}" level="H2"/>
+      <Text text="{page>/info}" class="infoText"/>
+    </VBox>
+    <Table
+      class="adminTable"
+      growing="true"
+      growingThreshold="30"
+      inset="false"
+      noDataText="{i18n>noData}"
+      visible="{page>/editable}"
+      items="{page>/rows}"
+    >
+      <columns>
+        <Column demandPopin="true" minScreenWidth="Tablet">
+          <Text text="{page>/columns/0/text}"/>
+        </Column>
+        <Column demandPopin="true" minScreenWidth="Tablet" visible="{= !!${page>/columns/1} }">
+          <Text text="{page>/columns/1/text}"/>
+        </Column>
+        <Column demandPopin="true" minScreenWidth="Tablet" visible="{= !!${page>/columns/2} }">
+          <Text text="{page>/columns/2/text}"/>
+        </Column>
+        <Column demandPopin="true" minScreenWidth="Tablet" visible="{= !!${page>/columns/3} }">
+          <Text text="{page>/columns/3/text}"/>
+        </Column>
+        <Column>
+          <Text text="{i18n>status}"/>
+        </Column>
+        <Column>
+          <Text text="{i18n>details}"/>
+        </Column>
+      </columns>
+      <items>
+        <ColumnListItem>
+          <cells>
+            <Text text="{page>cells/0/text}"/>
+            <Text text="{page>cells/1/text}"/>
+            <Text text="{page>cells/2/text}"/>
+            <Text text="{page>cells/3/text}"/>
+            <ObjectStatus text="{page>statusText}" state="{page>state}"/>
+            <HBox class="tableActions row" wrap="Wrap">
+              <Button
+                text="{i18n>openFloorEditor}"
+                type="Transparent"
+                icon="sap-icon://map"
+                visible="{page>/floor}"
+                press=".onFloorEditor"
+              />
+              <Button text="{i18n>open}" type="Transparent" visible="{page>/lot}" press=".onOpenLot"/>
+              <Button
+                text="{i18n>addParkingLevel}"
+                type="Transparent"
+                icon="sap-icon://add"
+                visible="{page>/lot}"
+                press=".onAddLevel"
+              />
+              <Button
+                text="{i18n>addParkingSpace}"
+                type="Transparent"
+                icon="sap-icon://add"
+                visible="{page>/level}"
+                press=".onAddSpace"
+              />
+              <Button text="{i18n>edit}" type="Transparent" icon="sap-icon://edit" press=".onEdit"/>
+              <Button text="{i18n>remove}" type="Transparent" icon="sap-icon://delete" press=".onRemove"/>
+              <Button
+                text="{i18n>changePassword}"
+                type="Transparent"
+                icon="sap-icon://key"
+                visible="{page>/password}"
+                press=".onPassword"
+              />
+              <Button
+                text="{i18n>provision}"
+                type="Transparent"
+                icon="sap-icon://chain-link"
+                visible="{page>/display}"
+                press=".onProvision"
+              />
+            </HBox>
+          </cells>
+        </ColumnListItem>
+      </items>
+    </Table>
+  </VBox>
+</mvc:View>

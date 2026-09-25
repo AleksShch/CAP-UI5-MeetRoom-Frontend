@@ -1,0 +1,84 @@
+@host = http://localhost:4005
+@base = {{host}}/odata/v4/booking
+@floor = 40000000-0000-4000-8000-000000000001
+@room = 50000000-0000-4000-8000-000000000001
+@user = 60000000-0000-4000-8000-000000000001
+
+### Health
+GET {{host}}/health
+
+### Login first; HTTP clients must retain the response cookie
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{"userID":"{{user}}"}
+
+### Session
+GET {{host}}/auth/session
+
+### Domain and company
+GET {{base}}/CompanyDomains?$filter=domain eq 'example.com'&$expand=company
+
+### Geographic hierarchy
+GET {{base}}/Sites?$expand=buildings($expand=floors)&$orderby=city
+
+### Resource location
+GET {{base}}/Resources?$expand=floor($expand=building($expand=site))
+
+### Read-only views
+GET {{base}}/Rooms
+
+### Workplaces
+GET {{base}}/Workplaces
+
+### Create room (ADMIN)
+POST {{base}}/Resources
+Content-Type: application/json
+
+{"floor_ID":"{{floor}}","type":"ROOM","code":"H-A-1-WORKSHOP","name":"Workshop","capacity":12,"roomType":"MEETING"}
+
+### Create workplace (ADMIN)
+POST {{base}}/Resources
+Content-Type: application/json
+
+{"floor_ID":"{{floor}}","type":"WORKPLACE","code":"H-A-1-DESK-NEW","name":"Window desk","workplaceType":"HOT_DESK","monitorCount":2}
+
+### Create own booking; repeating returns 409
+# @name createdBooking
+POST {{base}}/Bookings
+Content-Type: application/json
+
+{"resource_ID":"{{room}}","title":"Project planning","startAt":"2026-09-15T09:00:00+02:00","endAt":"2026-09-15T10:00:00+02:00","attendeeCount":4}
+
+### Read bookings
+GET {{base}}/Bookings?$expand=resource,user&$orderby=startAt&$count=true
+
+### Cancel (VS Code REST Client response variable)
+PATCH {{base}}/Bookings({{createdBooking.response.body.$.ID}})
+Content-Type: application/json
+
+{"status":"CANCELLED"}
+
+### Reference hours
+GET {{base}}/OpeningHours?$expand=site&$orderby=dayOfWeek
+
+### Own weekly plan
+POST {{base}}/WorkDays
+Content-Type: application/json
+
+{"date":"2026-09-15","mode":"HOME","startTime":"08:00:00","endTime":"17:00:00"}
+
+### REST alias with the same JSON contract
+GET {{host}}/api/v1/resources/{{room}}
+
+### Atomic batch: the second booking conflicts, so both are rolled back
+POST {{base}}/$batch
+Content-Type: application/json
+
+{"requests":[{"id":"a","method":"POST","url":"Bookings","atomicityGroup":"group1","body":{"resource_ID":"{{room}}","title":"A","startAt":"2026-10-01T09:00:00Z","endAt":"2026-10-01T10:00:00Z"}},{"id":"b","method":"POST","url":"Bookings","atomicityGroup":"group1","body":{"resource_ID":"{{room}}","title":"B","startAt":"2026-10-01T09:30:00Z","endAt":"2026-10-01T10:30:00Z"}}]}
+
+### Logout
+POST {{host}}/auth/logout
+Content-Type: application/json
+
+{}

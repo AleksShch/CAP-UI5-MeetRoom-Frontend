@@ -1,0 +1,4 @@
+ID;company_ID;code;name;address;countryCode;region;city;postalCode;street;houseNumber;latitude;longitude;timeZone;locale;siteType;active
+20000000-0000-4000-8000-000000000001;10000000-0000-4000-8000-000000000001;HAJ;Hannover Office;Demoallee 1 / 30159 Hannover;DE;Niedersachsen;Hannover;30159;Demoallee;1;52.3759000;9.7320000;Europe/Berlin;de-DE;OFFICE;true
+20000000-0000-4000-8000-000000000002;10000000-0000-4000-8000-000000000001;BER;Berlin Office;Demostrasse 2 / 10115 Berlin;DE;Berlin;Berlin;10115;Demostrasse;2;52.5200000;13.4050000;Europe/Berlin;de-DE;OFFICE;true
+20000000-0000-4000-8000-000000000003;10000000-0000-4000-8000-000000000001;WAW;Warsaw Office;Demo 3 / 00-001 Warszawa;PL;Mazowieckie;Warsaw;00-001;Demo;3;52.2297000;21.0122000;Europe/Warsaw;pl-PL;OFFICE;true

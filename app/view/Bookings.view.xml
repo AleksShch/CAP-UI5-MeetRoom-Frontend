@@ -1,0 +1,47 @@
+<mvc:View
+  controllerName="rsvroom.controller.Bookings"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+>
+  <VBox>
+    <VBox class="pageHeading">
+      <Title text="{i18n>bookings}" level="H1"/>
+      <Text text="{i18n>bookingsIntro}"/>
+    </VBox>
+    <HBox class="row" wrap="Wrap">
+      <Button text="{i18n>findDesk}" type="Emphasized" icon="sap-icon://add" press=".onNav">
+        <customData>
+          <core:CustomData key="route" value="spaces"/>
+        </customData>
+      </Button>
+      <Button text="{i18n>bookRoom}" type="Emphasized" icon="sap-icon://add" press=".onNav">
+        <customData>
+          <core:CustomData key="route" value="rooms"/>
+        </customData>
+      </Button>
+      <Button text="{i18n>bookParking}" type="Emphasized" icon="sap-icon://add" press=".onNav">
+        <customData>
+          <core:CustomData key="route" value="parking"/>
+        </customData>
+      </Button>
+      <Button text="{i18n>refresh}" type="Transparent" icon="sap-icon://refresh" press=".onRefresh"/>
+    </HBox>
+    <SegmentedButton visible="{page>/keyUser}" selectedKey="{page>/scope}" selectionChange=".onScope">
+      <items>
+        <SegmentedButtonItem key="mine" text="{i18n>myBookings}"/>
+        <SegmentedButtonItem key="all" text="{i18n>allBookings}"/>
+      </items>
+    </SegmentedButton>
+    <VBox class="emptyState" visible="{= !(${page>/items} || []).length }">
+      <Title text="{i18n>noBookings}" level="H3"/>
+      <Text text="{i18n>noMeetings}"/>
+    </VBox>
+    <VBox items="{page>/items}">
+      <VBox>
+        <Title text="{page>day}" level="H2" class="groupHeading"/>
+        <core:Fragment fragmentName="rsvroom.fragment.BookingCard" type="XML"/>
+      </VBox>
+    </VBox>
+  </VBox>
+</mvc:View>

@@ -1,0 +1,46 @@
+<mvc:View
+  controllerName="rsvroom.controller.DisplayPage"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+>
+  <VBox>
+    <Title text="{i18n>notFound}" visible="{= !${page>/found} }"/>
+    <VBox class="pageSection" visible="{page>/found}">
+      <HBox class="displayHeader row" wrap="Wrap">
+        <Image src="/assets/logo.svg" width="42px" height="42px"/>
+        <Text text="{i18n>appName}" class="displayBrand"/>
+        <Text text="{page>/day}" class="displayDate"/>
+        <Text text="{page>/clock}" class="displayClock"/>
+      </HBox>
+      <VBox id="statusCard" class="card displayStatusCard">
+        <Text text="{page>/type}" class="displayEyebrow"/>
+        <Title text="{page>/name}" level="H1"/>
+        <Text text="{page>/location}" class="displayLocation"/>
+        <Text text="{page>/status}" class="displayStatus"/>
+        <VBox visible="{= !!${page>/current} }">
+          <Title text="{page>/current/title}" level="H2"/>
+          <Text text="{page>/current/time}" class="displayBooking"/>
+          <Text text="{page>/remaining}" class="displayRemaining"/>
+        </VBox>
+        <Text text="{page>/until}" class="displayBooking" visible="{= !${page>/current} }"/>
+      </VBox>
+      <VBox class="card displayUpcoming">
+        <Text text="{i18n>nextMeeting}" class="eyebrow"/>
+        <Title text="{page>/next/title}" level="H2" visible="{= !!${page>/next} }"/>
+        <Text text="{page>/next/time}" visible="{= !!${page>/next} }"/>
+        <Text text="{i18n>noNext}" visible="{= !${page>/next} }"/>
+      </VBox>
+      <HBox class="displayFooter row" wrap="Wrap">
+        <Text text="{page>/footer}" class="muted"/>
+        <Text text="{page>/zone}" class="muted"/>
+        <Select width="8rem" selectedKey="{shell>/language}" tooltip="{i18n>language}" change=".onLanguage">
+          <core:Item key="en" text="{i18n>english}"/>
+          <core:Item key="de" text="{i18n>german}"/>
+        </Select>
+        <Button text="{i18n>fullscreen}" type="Transparent" icon="sap-icon://full-screen" press=".onFullscreen"/>
+        <Link text="{i18n>backToApp}" href="/"/>
+      </HBox>
+    </VBox>
+  </VBox>
+</mvc:View>

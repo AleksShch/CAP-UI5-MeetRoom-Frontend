@@ -1,0 +1,79 @@
+<mvc:View
+  controllerName="rsvroom.controller.App"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  displayBlock="true"
+  height="100%"
+>
+  <VBox id="root" class="workspace" height="100%">
+    <OverflowToolbar id="header" class="workspaceHeader" visible="{= !${shell>/display} }">
+      <Image src="/assets/logo.svg" width="34px" height="34px" decorative="false" alt="{i18n>appName}"/>
+      <HBox alignItems="Center">
+        <Title text="{i18n>appName}" level="H2" class="brandName"/>
+        <Text
+          text="{shell>/version}"
+          tooltip="{shell>/versionTooltip}"
+          wrapping="false"
+          class="buildVersion"
+          visible="{= !!${shell>/version} }"
+        />
+      </HBox>
+      <ToolbarSpacer/>
+      <Select
+        id="office"
+        width="13rem"
+        visible="{shell>/ready}"
+        tooltip="{i18n>office}"
+        selectedKey="{shell>/siteID}"
+        items="{shell>/sites}"
+        change=".onOffice"
+      >
+        <core:Item key="{shell>ID}" text="{shell>name}"/>
+      </Select>
+      <Text text="{shell>/date}" class="headerDate" visible="{shell>/ready}"/>
+      <Select width="8rem" tooltip="{i18n>language}" selectedKey="{shell>/language}" change=".onLanguage">
+        <core:Item key="en" text="{i18n>english}"/>
+        <core:Item key="de" text="{i18n>german}"/>
+      </Select>
+      <Text text="{shell>/role}" class="roleLabel" visible="{shell>/ready}"/>
+      <Button
+        text="{shell>/user}"
+        tooltip="{i18n>account}"
+        icon="sap-icon://person-placeholder"
+        class="profileButton"
+        visible="{shell>/ready}"
+        press=".onProfile"
+      />
+    </OverflowToolbar>
+    <HBox id="shell" class="workspaceBody" fitContainer="true">
+      <VBox id="navigation" class="workspaceNav" visible="{= ${shell>/ready} &amp;&amp; !${shell>/display} }">
+        <Text text="{shell>/company}" class="navCaption"/>
+        <VBox class="navItems" items="{shell>/navigation}">
+          <Button
+            text="{shell>label}"
+            icon="{shell>icon}"
+            type="{= ${shell>selected} ? 'Emphasized' : 'Transparent' }"
+            class="navButton"
+            press=".onNavigate"
+          />
+        </VBox>
+        <Text text="{shell>/domain}" class="navFooter"/>
+      </VBox>
+      <VBox id="main" class="workspaceMain" width="100%">
+        <MessageStrip text="{i18n>networkError}" type="Warning" visible="{shell>/disconnected}"/>
+        <VBox class="emptyState" visible="{shell>/error}">
+          <Title text="{i18n>error}" level="H3"/>
+          <Text text="{i18n>networkError}"/>
+          <Button text="{i18n>retry}" press=".onRetry"/>
+        </VBox>
+        <VBox class="emptyState" visible="{shell>/denied}">
+          <Title text="{i18n>accessDenied}" level="H3"/>
+          <Text text="{i18n>accessDeniedHint}"/>
+          <Button text="{i18n>dashboard}" press=".onDashboard"/>
+        </VBox>
+        <VBox id="pages" width="100%" visible="{= !${shell>/denied} &amp;&amp; !${shell>/error} }"/>
+      </VBox>
+    </HBox>
+  </VBox>
+</mvc:View>

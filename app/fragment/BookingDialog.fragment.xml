@@ -1,0 +1,56 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+  <Dialog
+    id="dialog"
+    title="{dialog>/heading}"
+    contentWidth="30rem"
+    stretch="{dialog>/mobile}"
+    afterClose=".onAfterClose"
+    class="formDialog"
+  >
+    <content>
+      <VBox class="dialogFields">
+        <VBox class="field">
+          <Label text="{dialog>/resourceLabel}" labelFor="resource"/>
+          <Select
+            id="resource"
+            width="100%"
+            selectedKey="{dialog>/resourceID}"
+            items="{dialog>/resources}"
+            change=".onBookingResource"
+          >
+            <core:Item key="{dialog>ID}" text="{dialog>name}"/>
+          </Select>
+        </VBox>
+        <VBox class="field">
+          <Label text="{i18n>date}" labelFor="day"/>
+          <DatePicker id="day" width="100%" valueFormat="yyyy-MM-dd" displayFormat="medium" value="{dialog>/day}"/>
+        </VBox>
+        <HBox class="formTimes row">
+          <VBox class="field">
+            <Label text="{i18n>start}" labelFor="start"/>
+            <TimePicker id="start" width="100%" valueFormat="HH:mm" displayFormat="HH:mm" value="{dialog>/start}"/>
+          </VBox>
+          <VBox class="field">
+            <Label text="{i18n>end}" labelFor="end"/>
+            <TimePicker id="end" width="100%" valueFormat="HH:mm" displayFormat="HH:mm" value="{dialog>/end}"/>
+          </VBox>
+        </HBox>
+        <Text text="{dialog>/zone}" class="muted"/>
+        <VBox class="field">
+          <Label text="{i18n>title}" labelFor="title"/>
+          <Input id="title" required="true" maxLength="200" value="{dialog>/title}"/>
+        </VBox>
+        <VBox class="field" visible="{= !${dialog>/parking} }">
+          <Label text="{i18n>capacity}" labelFor="attendees"/>
+          <StepInput id="attendees" min="1" max="{dialog>/capacity}" value="{dialog>/attendees}" width="100%"/>
+        </VBox>
+      </VBox>
+    </content>
+    <beginButton>
+      <Button text="{dialog>/submitText}" type="Emphasized" enabled="{= !${dialog>/busy} }" press=".onSaveBooking"/>
+    </beginButton>
+    <endButton>
+      <Button text="{i18n>cancel}" press=".onClose"/>
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>

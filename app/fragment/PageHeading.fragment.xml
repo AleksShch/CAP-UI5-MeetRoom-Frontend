@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+  <VBox class="pageHeading">
+    <Title text="{page>/title}" level="H1"/>
+    <Text text="{page>/intro}"/>
+  </VBox>
+</core:FragmentDefinition>

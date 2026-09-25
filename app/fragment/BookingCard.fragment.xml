@@ -1,0 +1,37 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+  <VBox class="card bookingCard">
+    <HBox class="row" wrap="Wrap" alignItems="Center">
+      <Title text="{page>title}" level="H3"/>
+      <ObjectStatus text="{page>statusText}" state="{page>state}" class="badge"/>
+    </HBox>
+    <Text text="{page>resourceName}"/>
+    <Text text="{page>time}" class="muted"/>
+    <Text text="{page>location}" class="muted"/>
+    <Text text="{page>owner}" visible="{= !${page>own} }" class="muted"/>
+    <Text text="{page>sourceText}" class="sourceTag"/>
+    <HBox class="row" wrap="Wrap">
+      <Button text="{i18n>open}" type="Transparent" press=".onOpenBooking"/>
+      <Button
+        text="{i18n>edit}"
+        type="Transparent"
+        icon="sap-icon://edit"
+        visible="{page>editable}"
+        press=".onEditBooking"
+      />
+      <Button
+        text="{i18n>cancelReservation}"
+        type="Transparent"
+        icon="sap-icon://decline"
+        visible="{page>editable}"
+        press=".onCancelBooking"
+      />
+      <Button
+        text="{i18n>deleteBooking}"
+        type="Transparent"
+        icon="sap-icon://delete"
+        visible="{page>deletable}"
+        press=".onDeleteBooking"
+      />
+    </HBox>
+  </VBox>
+</core:FragmentDefinition>

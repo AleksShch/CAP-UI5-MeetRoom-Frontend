@@ -1,0 +1,16 @@
+{
+  "legacyWatch": true,
+  "delay": 500,
+  "signal": "SIGTERM",
+  "watch": [
+    "server.js",
+    "srv",
+    "db",
+    "_i18n",
+    "scripts",
+    "package.json",
+    ".cdsrc.json",
+    ".cdsrc-private.json"
+  ],
+  "ext": "js,cjs,mjs,cds,csn,json,csv,properties"
+}

@@ -1,0 +1,142 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "rsvroom",
+    "type": "application",
+    "i18n": {
+      "bundleUrl": "i18n/i18n.properties",
+      "supportedLocales": [
+        "en",
+        "de"
+      ],
+      "fallbackLocale": "en"
+    },
+    "title": "{{appName}}",
+    "description": "{{appDescription}}",
+    "applicationVersion": {
+      "version": "1.0.0"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.ui.layout": {},
+        "sap.ui.unified": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "rsvroom.i18n.i18n",
+          "supportedLocales": [
+            "en",
+            "de"
+          ],
+          "fallbackLocale": "en",
+          "async": true
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "rsvroom.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "app"
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.ui.core.routing.Router"
+      },
+      "routes": [
+        {
+          "name": "home",
+          "pattern": ""
+        },
+        {
+          "name": "dashboard",
+          "pattern": "dashboard"
+        },
+        {
+          "name": "office",
+          "pattern": "office/{id}"
+        },
+        {
+          "name": "floor",
+          "pattern": "floor/{id}"
+        },
+        {
+          "name": "spaces",
+          "pattern": "spaces"
+        },
+        {
+          "name": "rooms",
+          "pattern": "rooms"
+        },
+        {
+          "name": "parking",
+          "pattern": "parking"
+        },
+        {
+          "name": "parkingLot",
+          "pattern": "parking-lot/{id}"
+        },
+        {
+          "name": "parkingSpace",
+          "pattern": "parking-space/{id}"
+        },
+        {
+          "name": "desk",
+          "pattern": "desk/{id}"
+        },
+        {
+          "name": "room",
+          "pattern": "room/{id}"
+        },
+        {
+          "name": "bookings",
+          "pattern": "bookings"
+        },
+        {
+          "name": "schedule",
+          "pattern": "schedule"
+        },
+        {
+          "name": "team",
+          "pattern": "team"
+        },
+        {
+          "name": "users",
+          "pattern": "users"
+        },
+        {
+          "name": "admin",
+          "pattern": "admin"
+        },
+        {
+          "name": "planEditor",
+          "pattern": "floor-editor/:id:"
+        },
+        {
+          "name": "display",
+          "pattern": "display/{kind}/{id}:?query:"
+        }
+      ]
+    }
+  }
+}

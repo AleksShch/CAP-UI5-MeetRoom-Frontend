@@ -1,0 +1,79 @@
+<mvc:View
+  controllerName="rsvroom.controller.Dashboard"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+>
+  <VBox>
+    <VBox class="pageHeading">
+      <Title text="{i18n>welcome}" level="H1"/>
+      <Text text="{i18n>intro}"/>
+    </VBox>
+    <HBox class="row statGrid" wrap="Wrap" items="{page>/stats}">
+      <VBox class="card statCard">
+        <Text text="{page>label}" class="eyebrow"/>
+        <Title text="{page>value}" level="H2"/>
+        <Button text="{page>button}" type="Transparent" icon="sap-icon://slim-arrow-right" press=".onNav"/>
+      </VBox>
+    </HBox>
+    <HBox class="row dashboardGrid" wrap="Wrap">
+      <VBox class="card workplaceCard">
+        <Text text="{i18n>workplace}" class="eyebrow"/>
+        <Text text="{page>/today}" class="muted"/>
+        <VBox class="detailContent" visible="{= !!${page>/desk} }">
+          <Title text="{page>/desk/resourceName}" level="H2"/>
+          <Text text="{page>/desk/location}"/>
+          <Text text="{page>/desk/time}" class="heroTime"/>
+          <HBox class="row">
+            <Button text="{i18n>viewDesk}" type="Emphasized" press=".onDesk"/>
+            <Button text="{i18n>edit}" press=".onEditDesk"/>
+          </HBox>
+        </VBox>
+        <VBox class="detailContent" visible="{= !${page>/desk} }">
+          <Title text="{i18n>noWorkplace}" level="H2"/>
+          <Text text="{i18n>noWorkplaceHint}" class="muted"/>
+          <Button text="{i18n>findDesk}" type="Emphasized" icon="sap-icon://add" press=".onNav">
+            <customData>
+              <core:CustomData key="route" value="spaces"/>
+            </customData>
+          </Button>
+        </VBox>
+      </VBox>
+      <VBox class="card upcomingCard">
+        <HBox class="row">
+          <Title text="{i18n>upcoming}" level="H3"/>
+          <Button text="{i18n>viewAll}" type="Transparent" press=".onNav">
+            <customData>
+              <core:CustomData key="route" value="bookings"/>
+            </customData>
+          </Button>
+        </HBox>
+        <VBox class="emptyState" visible="{= !(${page>/meetings} || []).length }">
+          <Title text="{i18n>noMeetings}" level="H3"/>
+          <Button text="{i18n>bookRoom}" type="Transparent" icon="sap-icon://add" press=".onNav">
+            <customData>
+              <core:CustomData key="route" value="rooms"/>
+            </customData>
+          </Button>
+        </VBox>
+        <VBox items="{page>/meetings}">
+          <core:Fragment fragmentName="rsvroom.fragment.BookingCard" type="XML"/>
+        </VBox>
+      </VBox>
+    </HBox>
+    <VBox class="card">
+      <HBox class="row">
+        <Title text="{i18n>teamToday}" level="H3"/>
+        <Button text="{i18n>viewAll}" type="Transparent" press=".onNav">
+          <customData>
+            <core:CustomData key="route" value="team"/>
+          </customData>
+        </Button>
+      </HBox>
+      <Text text="{i18n>noTeam}" visible="{= !(${page>/people} || []).length }"/>
+      <HBox class="peopleGrid row" wrap="Wrap" items="{page>/people}">
+        <core:Fragment fragmentName="rsvroom.fragment.PersonCard" type="XML"/>
+      </HBox>
+    </VBox>
+  </VBox>
+</mvc:View>

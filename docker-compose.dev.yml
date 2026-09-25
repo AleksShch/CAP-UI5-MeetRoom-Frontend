@@ -1,0 +1,6 @@
+services:
+  rsvroom:
+    # Compatibility with existing commands using both Compose files.
+    # Development volumes and the watcher are now enabled in docker-compose.yml.
+    build:
+      target: development

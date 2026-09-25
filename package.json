@@ -1,0 +1,65 @@
+{
+  "name": "meetroom-cap",
+  "version": "1.0.0",
+  "description": "Meeting room booking application built with SAP CAP",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@cap-js/sqlite": "^2.4",
+    "@sap/cds": "^9",
+    "express": "5.2.1",
+    "http-proxy-middleware": "3.0.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@sap/cds-dk": "^9",
+    "@ui5/cli": "^4.0.66",
+    "nodemon": "3.1.14",
+    "prettier": "3.6.2"
+  },
+  "scripts": {
+    "start": "node scripts/start.js",
+    "prestart": "npm run build:ui -- --ensure",
+    "build:ui": "node scripts/build-ui.js",
+    "deploy": "node scripts/deploy.js",
+    "seed:demo": "node scripts/demo-data.js",
+    "predev": "npm run build:ui -- --ensure && node scripts/setup-token.js --ensure",
+    "setup-token": "node scripts/setup-token.js",
+    "dev": "cds watch",
+    "predev:docker": "npm run build:ui -- --ensure",
+    "dev:docker": "nodemon --config nodemon.docker.json scripts/start.js",
+    "test": "node --test --test-concurrency=1 test/*.test.js",
+    "test:ui": "npm run build:ui -- --ensure && playwright test",
+    "test:ui:rust": "npm run build:ui -- --ensure && playwright test --config playwright.rust.config.js",
+    "format": "prettier --write \"app/**/*.js\" \"srv/**/*.js\" server.js",
+    "format:check": "prettier --check \"app/**/*.js\" \"srv/**/*.js\" server.js"
+  },
+  "cds": {
+    "server": {
+      "index": true
+    },
+    "requires": {
+      "auth": {
+        "impl": "./srv/auth.js"
+      },
+      "db": {
+        "kind": "sqlite",
+        "schema_evolution": "auto",
+        "pool": {
+          "max": 1,
+          "min": 0
+        },
+        "credentials": {
+          "url": ".data/rsvroom.sqlite"
+        },
+        "[test]": {
+          "credentials": {
+            "url": ":memory:"
+          }
+        }
+      }
+    }
+  },
+  "private": true
+}

@@ -1,0 +1,131 @@
+<mvc:View
+  controllerName="rsvroom.controller.FloorEditorPage"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  xmlns:rsv="rsvroom.control"
+  xmlns:unified="sap.ui.unified"
+>
+  <VBox>
+    <VBox class="pageHeading">
+      <Title text="{i18n>planEditor}" level="H1"/>
+      <Text text="{i18n>floorEditorIntro}"/>
+    </VBox>
+    <HBox class="filterBar card row" wrap="Wrap">
+      <VBox class="field">
+        <Label text="{i18n>floor}" labelFor="location"/>
+        <Select
+          id="location"
+          width="100%"
+          selectedKey="{page>/locationID}"
+          items="{page>/locations}"
+          change=".onLocation"
+        >
+          <core:Item key="{page>ID}" text="{page>name}"/>
+        </Select>
+      </VBox>
+      <unified:FileUploader
+        id="upload"
+        buttonOnly="true"
+        buttonText="{i18n>uploadFloorImage}"
+        tooltip="{i18n>uploadFloorImage}"
+        sameFilenameAllowed="true"
+        fileType="jpg,jpeg,png,svg"
+        visible="{= !!${page>/floor} }"
+        change=".onUpload"
+      />
+      <Button text="{i18n>clearPlan}" type="Transparent" visible="{= !!${page>/floor} }" press=".onClear"/>
+      <Button text="{i18n>refresh}" type="Transparent" icon="sap-icon://refresh" press=".onRefresh"/>
+    </HBox>
+    <VBox class="emptyState" visible="{= !${page>/floor} }">
+      <Title text="{= ${page>/parking} ? ${i18n>noParkingLevels} : ${i18n>selectFloor} }" level="H3"/>
+      <Text text="{i18n>parkingPlanNeedsLevel}" visible="{page>/parking}"/>
+      <Button text="{i18n>admin}" type="Emphasized" press=".onAdmin"/>
+    </VBox>
+    <VBox class="pageSection" visible="{= !!${page>/floor} }">
+      <Text text="{page>/dimensions}" class="zoneNote"/>
+      <Text text="{page>/floor/planImageName}" class="muted"/>
+      <Text text="{i18n>editorHelp}" class="infoText"/>
+      <HBox class="editorLayout row" wrap="Wrap">
+        <VBox width="100%">
+          <rsv:FloorPlan
+            id="canvas"
+            editing="true"
+            objects="{page>/objects}"
+            plan="{page>/floor/floorPlan}"
+            image="{page>/floor/planImage}"
+            planWidth="{page>/floor/planWidth}"
+            planHeight="{page>/floor/planHeight}"
+            selected="{page>/selectedID}"
+            viewState="{page>/viewState}"
+            viewport=".onViewport"
+            select=".onSelect"
+            create=".onCreate"
+            change=".onGeometry"
+            interactionEnd=".onInteractionEnd"
+            remove=".onRemove"
+            duplicate=".onDuplicate"
+          />
+        </VBox>
+        <VBox class="card objectInspector">
+          <Title text="{i18n>floorObjects}" level="H3"/>
+          <VBox class="field">
+            <Label text="{i18n>selectObject}" labelFor="object"/>
+            <Select
+              id="object"
+              width="100%"
+              selectedKey="{page>/selectedID}"
+              items="{page>/objectOptions}"
+              change=".onObject"
+            >
+              <core:Item key="{page>ID}" text="{page>name}"/>
+            </Select>
+          </VBox>
+          <Button text="{i18n>addArea}" type="Emphasized" icon="sap-icon://add" press=".onAdd"/>
+          <Text text="{i18n>selectObjectHint}" class="muted" visible="{= !${page>/selected} }"/>
+          <VBox visible="{= !!${page>/selected} }">
+            <VBox class="field">
+              <Label text="{i18n>name}" labelFor="name"/>
+              <Input id="name" width="100%" maxLength="200" value="{page>/draft/name}" liveChange=".onName"/>
+            </VBox>
+            <VBox class="field">
+              <Label text="{i18n>cornerRadius}" labelFor="radius"/>
+              <Input id="radius" type="Number" width="100%" value="{page>/draft/radius}" liveChange=".onRadius"/>
+            </VBox>
+            <VBox class="field">
+              <Label text="{i18n>type}" labelFor="type"/>
+              <Select id="type" width="100%" selectedKey="{page>/draft/type}" items="{page>/types}" change=".onType">
+                <core:Item key="{page>ID}" text="{page>name}"/>
+              </Select>
+            </VBox>
+            <VBox class="field">
+              <Label text="{i18n>linkedResource}" labelFor="linkedResource"/>
+              <Select
+                id="linkedResource"
+                width="100%"
+                selectedKey="{page>/draft/resource_ID}"
+                items="{page>/resources}"
+                change=".onResource"
+              >
+                <core:Item key="{page>ID}" text="{page>name}"/>
+              </Select>
+            </VBox>
+            <Text text="{i18n>resourceLinkHint}" class="muted"/>
+            <Button
+              id="configure"
+              text="{i18n>configureAreaBooking}"
+              icon="sap-icon://add"
+              visible="{= !${page>/selected/resource_ID} }"
+              press=".onConfigure"
+            />
+            <HBox class="objectActions row" wrap="Wrap">
+              <Button text="{i18n>save}" type="Emphasized" press=".onSave"/>
+              <Button text="{i18n>duplicateArea}" type="Transparent" icon="sap-icon://copy" press=".onDuplicate"/>
+              <Button text="{i18n>remove}" type="Transparent" icon="sap-icon://delete" press=".onRemove"/>
+            </HBox>
+          </VBox>
+        </VBox>
+      </HBox>
+    </VBox>
+  </VBox>
+</mvc:View>

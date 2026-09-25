@@ -1,0 +1,73 @@
+@base = http://localhost:4004/odata/v4/booking
+@floor = 40000000-0000-4000-8000-000000000001
+@room = 50000000-0000-4000-8000-000000000001
+@user = 60000000-0000-4000-8000-000000000001
+
+### Company and its domains
+GET {{base}}/CompanyDomains?$filter=domain eq 'example.com'&$expand=company
+
+### Geographic hierarchy
+GET {{base}}/Sites?$expand=buildings($expand=floors)&$orderby=city
+
+### Resources and location
+GET {{base}}/Resources?$expand=floor($expand=building($expand=site))
+
+### Rooms and workplaces are read-only views
+GET {{base}}/Rooms
+
+### Workplaces
+GET {{base}}/Workplaces
+
+### Create a room; code must be unique within its floor
+POST {{base}}/Resources
+Content-Type: application/json
+
+{
+  "floor_ID": "{{floor}}",
+  "type": "ROOM",
+  "code": "H-A-1-WORKSHOP",
+  "name": "Workshop",
+  "capacity": 12,
+  "roomType": "MEETING"
+}
+
+### Create a workplace
+POST {{base}}/Resources
+Content-Type: application/json
+
+{
+  "floor_ID": "{{floor}}",
+  "type": "WORKPLACE",
+  "code": "H-A-1-DESK-NEW",
+  "name": "Window desk",
+  "workplaceType": "HOT_DESK",
+  "monitorCount": 2
+}
+
+### Create a booking; repeating this request returns 409
+# @name createdBooking
+POST {{base}}/Bookings
+Content-Type: application/json
+
+{
+  "resource_ID": "{{room}}",
+  "user_ID": "{{user}}",
+  "title": "Project planning",
+  "startAt": "2026-09-15T09:00:00+02:00",
+  "endAt": "2026-09-15T10:00:00+02:00",
+  "attendeeCount": 4
+}
+
+### Read bookings
+GET {{base}}/Bookings?$expand=resource,user&$orderby=startAt
+
+### Cancel the booking (VS Code REST Client response variable)
+PATCH {{base}}/Bookings({{createdBooking.response.body.$.ID}})
+Content-Type: application/json
+
+{
+  "status": "CANCELLED"
+}
+
+### Reference opening hours
+GET {{base}}/OpeningHours?$expand=site&$orderby=dayOfWeek

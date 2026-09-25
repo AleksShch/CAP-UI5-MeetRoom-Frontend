@@ -1,0 +1,9 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+  <VBox class="card personCard">
+    <Text text="{page>avatar}" class="personAvatar"/>
+    <Title text="{page>displayName}" level="H4"/>
+    <Text text="{page>modeText}" class="muted"/>
+    <Link text="{page>resourceCode}" visible="{= !!${page>resourceID} }" press=".onPersonResource"/>
+    <Text text="{page>siteName}" class="muted" visible="{= !${page>resourceID} }"/>
+  </VBox>
+</core:FragmentDefinition>

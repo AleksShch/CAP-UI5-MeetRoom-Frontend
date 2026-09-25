@@ -1,0 +1,35 @@
+services:
+  rsvroom:
+    build:
+      context: .
+      dockerfile: dockerfile
+      target: development
+
+    init: true
+
+    environment:
+      BACKEND_URL: ${BACKEND_URL:-http://rsvroom-backend:4005}
+
+    ports:
+      - "127.0.0.1:4004:4004"
+
+    volumes:
+      - .:/app
+      - rsvroom-node-modules:/app/node_modules
+      - rsvroom-ui:/app/gen
+      - rsvroom-data:/app/.data
+
+    networks:
+      - rsvroom-network
+
+    restart: unless-stopped
+
+volumes:
+  rsvroom-node-modules:
+  rsvroom-ui:
+  rsvroom-data:
+
+networks:
+  rsvroom-network:
+    external: true
+    name: rsvroom-network

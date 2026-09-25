@@ -1,0 +1,17 @@
+<mvc:View controllerName="rsvroom.controller.Users" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
+  <VBox>
+    <VBox class="pageHeading">
+      <Title text="{i18n>users}" level="H1"/>
+      <Text text="{i18n>usersIntro}"/>
+    </VBox>
+    <Button text="{i18n>addUser}" type="Emphasized" icon="sap-icon://add" press=".onAddUser"/>
+    <HBox class="peopleGrid row" wrap="Wrap" items="{page>/items}">
+      <VBox class="card personCard">
+        <Title text="{page>displayName}" level="H3"/>
+        <Text text="{page>email}"/>
+        <Text text="{page>roleText}"/>
+        <ObjectStatus text="{page>statusText}" state="{page>state}" class="badge"/>
+      </VBox>
+    </HBox>
+  </VBox>
+</mvc:View>

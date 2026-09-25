@@ -1,0 +1,57 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+  <Dialog
+    id="dialog"
+    title="{dialog>/heading}"
+    contentWidth="38rem"
+    stretch="{dialog>/mobile}"
+    afterClose=".onAfterClose"
+    class="formDialog"
+  >
+    <content>
+      <VBox class="dialogFields">
+        <VBox items="{dialog>/fields}">
+          <VBox class="field adminField">
+            <VBox visible="{dialog>input}">
+              <Label text="{dialog>label}" labelFor="input" required="{dialog>required}"/>
+              <Input
+                id="input"
+                value="{dialog>value}"
+                type="{dialog>inputType}"
+                width="100%"
+                required="{dialog>required}"
+                enabled="{dialog>enabled}"
+              />
+            </VBox>
+            <VBox visible="{dialog>select}">
+              <Label text="{dialog>label}" labelFor="select" required="{dialog>required}"/>
+              <Select
+                id="select"
+                width="100%"
+                selectedKey="{dialog>value}"
+                enabled="{dialog>enabled}"
+                items="{dialog>options}"
+              >
+                <core:Item key="{dialog>ID}" text="{dialog>name}"/>
+              </Select>
+            </VBox>
+            <VBox visible="{dialog>boolean}">
+              <Label text="{dialog>label}" labelFor="boolean"/>
+              <CheckBox id="boolean" selected="{dialog>boolValue}" enabled="{dialog>enabled}"/>
+            </VBox>
+          </VBox>
+        </VBox>
+        <VBox class="field" visible="{dialog>/initialPassword}">
+          <Label text="{i18n>initialPassword}" labelFor="initialPassword" required="true"/>
+          <Input id="initialPassword" type="Password" maxLength="256" value="{dialog>/password}"/>
+          <Text text="{i18n>passwordHint}"/>
+        </VBox>
+      </VBox>
+    </content>
+    <beginButton>
+      <Button text="{i18n>save}" type="Emphasized" enabled="{= !${dialog>/busy} }" press=".onSaveAdmin"/>
+    </beginButton>
+    <endButton>
+      <Button text="{i18n>cancel}" press=".onClose"/>
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>

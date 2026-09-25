@@ -1,0 +1,66 @@
+<mvc:View
+  controllerName="rsvroom.controller.Schedule"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+>
+  <VBox>
+    <VBox class="pageHeading">
+      <Title text="{i18n>schedule}" level="H1"/>
+      <Text text="{i18n>weekIntro}"/>
+    </VBox>
+    <HBox class="weekNavigation row" wrap="Wrap">
+      <Button text="{i18n>previousWeek}" type="Transparent" icon="sap-icon://slim-arrow-left" press=".onPrevious"/>
+      <Title text="{page>/heading}" level="H2"/>
+      <Button text="{i18n>nextWeek}" type="Transparent" icon="sap-icon://slim-arrow-right" press=".onNext"/>
+    </HBox>
+    <HBox class="weekGrid row" wrap="Wrap" items="{page>/days}">
+      <VBox class="card workdayCard">
+        <Text text="{page>weekday}" class="eyebrow"/>
+        <Title text="{page>dateLabel}" level="H3"/>
+        <VBox class="field">
+          <Label text="{i18n>presence}" labelFor="mode"/>
+          <Select id="mode" width="100%" selectedKey="{page>mode}" items="{page>/modes}" change=".onDayChange">
+            <core:Item key="{page>ID}" text="{page>name}"/>
+          </Select>
+        </VBox>
+        <VBox class="field" visible="{= ${page>mode} === 'OFFICE' }">
+          <Label text="{i18n>office}" labelFor="office"/>
+          <Select id="office" width="100%" selectedKey="{page>site_ID}" items="{page>/sites}" change=".onDayChange">
+            <core:Item key="{page>ID}" text="{page>name}"/>
+          </Select>
+        </VBox>
+        <VBox class="field">
+          <Label text="{i18n>start}" labelFor="start"/>
+          <TimePicker
+            id="start"
+            width="100%"
+            valueFormat="HH:mm:ss"
+            displayFormat="HH:mm"
+            value="{page>startTime}"
+            change=".onDayChange"
+          />
+        </VBox>
+        <VBox class="field">
+          <Label text="{i18n>end}" labelFor="end"/>
+          <TimePicker
+            id="end"
+            width="100%"
+            valueFormat="HH:mm:ss"
+            displayFormat="HH:mm"
+            value="{page>endTime}"
+            change=".onDayChange"
+          />
+        </VBox>
+        <Button
+          text="{i18n>pickDesk}"
+          type="Transparent"
+          icon="sap-icon://map"
+          visible="{= ${page>mode} === 'OFFICE' }"
+          press=".onPickDesk"
+        />
+      </VBox>
+    </HBox>
+    <Button id="save" text="{i18n>save}" type="Emphasized" press=".onSave"/>
+  </VBox>
+</mvc:View>
